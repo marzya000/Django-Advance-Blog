@@ -24,13 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
-#این پایینیه مفدار secret key  هست دقت کن
-##'django-insecure-qmrb=el%h$5m+_v^=5tj^@+ilot6=qff1o(0)417)5m1saf1=v'
+
+##  'django-insecure-qmrb=el%h$5m+_v^=5tj^@+ilot6=qff1o(0)417)5m1saf1=v'
 
 #==========================================
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG",cast=bool)
+DEBUG = config('DEBUG',cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')],default="*")
 
