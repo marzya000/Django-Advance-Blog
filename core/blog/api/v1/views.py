@@ -2,8 +2,17 @@
 from rest_framework.decorators import api_view  # type: ignore
 from rest_framework.response import Response # type: ignore
 
+data = {
+    "id":1,
+    "title":"hello"
+}
 
 @api_view()
-def postlist(request):
+def postList(request):
     return Response('ok')
+
+@api_view()
+def postDetail(request,id):
+    return Response(data)
+
 
