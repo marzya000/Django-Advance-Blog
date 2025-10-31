@@ -8,9 +8,6 @@ from django.shortcuts import get_object_or_404
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 
-from rest_framework.decorators import api_view # type: ignore
-from rest_framework.response import Response
-# Create your views here.
 
 # Function Base View show a template
 '''
@@ -98,8 +95,4 @@ class PostEditView(LoginRequiredMixin,UpdateView):
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = '/blog/post/'
-
-@api_view()
-def api_post_list_view(request):
-    return Response({"name":"marzya"})
 
