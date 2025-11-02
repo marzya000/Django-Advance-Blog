@@ -1,6 +1,6 @@
 
 from rest_framework.decorators import api_view, permission_classes  # type: ignore
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly, IsAdminUser # type: ignore
 from rest_framework.response import Response # type: ignore
 from .serializers import PostSerializer
 from ...models import Post
@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 
 
 @api_view(["GET","POST"])
-@permission_classes([IsAdminUser])
+@permission_classes([IsAuthenticated])
 def postList(request):
     if request.method == "GET":
         posts = Post.objects.filter(status=True)
@@ -23,6 +23,7 @@ def postList(request):
        
 
 @api_view(["GET","PUT","DELETE"])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def postDetail(request,id):
     post = get_object_or_404(Post,pk=id,status=True)
     if request.method == "GET":        
