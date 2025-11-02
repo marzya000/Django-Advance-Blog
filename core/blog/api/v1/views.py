@@ -1,5 +1,6 @@
 
-from rest_framework.decorators import api_view  # type: ignore
+from rest_framework.decorators import api_view, permission_classes  # type: ignore
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response # type: ignore
 from .serializers import PostSerializer
 from ...models import Post
@@ -8,6 +9,7 @@ from django.shortcuts import get_object_or_404
 
 
 @api_view(["GET","POST"])
+@permission_classes([IsAdminUser])
 def postList(request):
     if request.method == "GET":
         posts = Post.objects.filter(status=True)
