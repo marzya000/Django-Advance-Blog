@@ -7,6 +7,8 @@ from ...models import Post
 from rest_framework import status # type: ignore
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView # type: ignore
+from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView# type: ignore
+from rest_framework import mixins # type: ignore
 
 
 
@@ -45,23 +47,36 @@ def postDetail(request,id):
    
 
 
-class PostList(APIView):
-    """ getting a list of posts and creating new post"""
+'''class PostList(APIView):
+    """getting a list of posts and creating new post"""
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     
     def get(self,request):
-        """ retrieving a list of posts"""
+        # retrieving a list of posts
         posts = Post.objects.filter(status=True)
         serializer = PostSerializer(posts,many=True)
         return Response(serializer.data)
     
     def post(self,request):
-        """ creating a post with providing data"""
+        """ creating a post with providing data """
         serializer = PostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data)'''
+
+
+
+class PostList(ListCreateAPIView):
+    """ getting a list of posts and creating new post """
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+
+      
+
+
 
 
 class PostDetail(APIView):
