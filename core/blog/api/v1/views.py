@@ -7,9 +7,9 @@ from ...models import Post
 from rest_framework import status # type: ignore
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView # type: ignore
+from rest_framework import viewsets # type: ignore
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView # type: ignore
 from rest_framework import mixins # type: ignore
-
 
 
 
@@ -114,7 +114,35 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.filter(status=True)
     
     
+# Example for ViewSet in CBV
 
+class PostViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+    def list(self,request):
+        serializer = self.serializer_class(self.queryset, many=True)
+        return Response(serializer.data)
+
+
+    def retrieve(self,request,pk=None):
+        post_object = get_object_or_404(self.queryset,pk=pk)
+        serializer = self.serializer_class(post_object)
+        return Response(serializer.data)
+
+
+    def create(self,request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 
 
