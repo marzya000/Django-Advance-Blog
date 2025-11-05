@@ -146,9 +146,11 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # restframework settings
 
-#REST_FRAMEWORK = {
-    #'DEFAULT_PERMISSION_CLASSES': [
-    #    'rest_framework.permissions.IsAuthenticated',
-    #]
-#}
+# Source - https://stackoverflow.com/questions/57654243/how-to-fix-attributeerror-at-api-doc-autoschema-object-has-no-attribute-ge
+# Posted by Omkar
+# Retrieved 11/5/2025, License - CC BY-SA 4.0
+
+REST_FRAMEWORK = { 
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+     }
 
