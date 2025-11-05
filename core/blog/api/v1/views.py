@@ -10,7 +10,7 @@ from rest_framework.views import APIView # type: ignore
 from rest_framework import viewsets # type: ignore
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView # type: ignore
 from rest_framework import mixins # type: ignore
-
+from rest_framework.decorators import action # type: ignore
 
 
 
