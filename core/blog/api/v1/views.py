@@ -11,6 +11,7 @@ from rest_framework import viewsets # type: ignore
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView # type: ignore
 from rest_framework import mixins # type: ignore
 from rest_framework.decorators import action # type: ignore
+from .permissions import IsOwnerOrReadOnly
 
 
 
@@ -26,7 +27,6 @@ def postList(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)"""
-
 
 
 """@api_view(["GET","PUT","DELETE"])
@@ -46,7 +46,6 @@ def postDetail(request,id):
         return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)"""
    
 
-
 '''class PostList(APIView):
     """getting a list of posts and creating new post"""
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -64,14 +63,6 @@ def postDetail(request,id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)'''
-
-
-
-class PostList(ListCreateAPIView):
-    """ getting a list of posts and creating new post """
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True)
 
 
 '''class PostDetail(APIView):
@@ -101,18 +92,23 @@ class PostList(ListCreateAPIView):
 '''
     
 
+#class PostList(ListCreateAPIView):
+    #""" getting a list of posts and creating new post """
+   # permission_classes = [IsAuthenticatedOrReadOnly]
+    #serializer_class = PostSerializer
+    #queryset = Post.objects.filter(status=True)
 
-class PostDetail(RetrieveUpdateDestroyAPIView):
-    """ getting detail of the post and edit plus removing it """
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    serializer_class = PostSerializer
-    queryset = Post.objects.filter(status=True)
+#class PostDetail(RetrieveUpdateDestroyAPIView):
+    #""" getting detail of the post and edit plus removing it """
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    #serializer_class = PostSerializer
+    #queryset = Post.objects.filter(status=True)
     
     
 # Example for ViewSet in CBV
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
 
