@@ -12,6 +12,7 @@ from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIVi
 from rest_framework import mixins # type: ignore
 from rest_framework.decorators import action # type: ignore
 from .permissions import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend # type: ignore
 
 
 
@@ -91,18 +92,18 @@ def postDetail(request,id):
         return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)
 '''
     
-
+'''
 #class PostList(ListCreateAPIView):
     #""" getting a list of posts and creating new post """
    # permission_classes = [IsAuthenticatedOrReadOnly]
     #serializer_class = PostSerializer
-    #queryset = Post.objects.filter(status=True)
+    #queryset = Post.objects.filter(status=True)'''
 
-#class PostDetail(RetrieveUpdateDestroyAPIView):
+'''#class PostDetail(RetrieveUpdateDestroyAPIView):
     #""" getting detail of the post and edit plus removing it """
     #permission_classes = [IsAuthenticatedOrReadOnly]
     #serializer_class = PostSerializer
-    #queryset = Post.objects.filter(status=True)
+    #queryset = Post.objects.filter(status=True)'''
     
     
 # Example for ViewSet in CBV
@@ -111,6 +112,8 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category','author','status']
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
