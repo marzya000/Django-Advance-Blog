@@ -152,6 +152,6 @@ AUTH_USER_MODEL = 'accounts.User'
 # Retrieved 11/5/2025, License - CC BY-SA 4.0
 
 REST_FRAMEWORK = { 
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
      }
 
