@@ -13,7 +13,7 @@ from rest_framework import mixins # type: ignore
 from rest_framework.decorators import action # type: ignore
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend # type: ignore
-from rest_framework.filters import SearchFilter # type: ignore
+from rest_framework.filters import SearchFilter,OrderingFilter # type: ignore
 
 
 """@api_view(["GET","POST"])
@@ -112,10 +112,10 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend,SearchFilter]
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_fields = ['category','author','status']
     search_fields = ['title','content']
-
+    ordering_fields = ['published_date']
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
