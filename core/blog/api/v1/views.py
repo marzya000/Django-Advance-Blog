@@ -1,11 +1,7 @@
-
-from rest_framework.decorators import api_view, permission_classes  # type: ignore
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly, IsAdminUser # type: ignore
 from rest_framework.response import Response # type: ignore
 from .serializers import PostSerializer, CategorySerializer
 from ...models import Post, Category
-from rest_framework import status # type: ignore
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView # type: ignore
 from rest_framework import viewsets # type: ignore
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView # type: ignore
@@ -15,9 +11,14 @@ from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend # type: ignore
 from rest_framework.filters import SearchFilter,OrderingFilter # type: ignore
 from .paginations import DefaultPagination
+# Example for function based view
+from rest_framework.decorators import api_view, permission_classes  # type: ignore
+from rest_framework import status # type: ignore
+from django.shortcuts import get_object_or_404
 
-
-"""@api_view(["GET","POST"])
+# Example for function based view
+'''
+@api_view(["GET","POST"])
 @permission_classes([IsAuthenticated])
 def postList(request):
     if request.method == "GET":
@@ -28,10 +29,10 @@ def postList(request):
         serializer = PostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)"""
+        return Response(serializer.data)
 
 
-"""@api_view(["GET","PUT","DELETE"])
+@api_view(["GET","PUT","DELETE"])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def postDetail(request,id):
     post = get_object_or_404(Post,pk=id,status=True)
@@ -45,9 +46,14 @@ def postDetail(request,id):
         return Response(serializer.data)
     elif request.method == "DELETE":
         post.delete()
-        return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)"""
+        return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)'''
    
 
+
+   #####
+
+
+# Example for APIView in Class Based View
 '''class PostList(APIView):
     """getting a list of posts and creating new post"""
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -123,6 +129,7 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
     
 
 
