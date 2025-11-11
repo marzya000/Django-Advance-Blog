@@ -52,7 +52,6 @@ def postDetail(request,id):
 
    #####
 
-
 # Example for APIView in Class Based View
 '''class PostList(APIView):
     """getting a list of posts and creating new post"""

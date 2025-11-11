@@ -29,7 +29,7 @@ schema_view = get_schema_view(
       default_version='v1',
       description="this is a test api for maktabkhooneh project",
       terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="mnaq_1987@yahoo.com"),
+      contact=openapi.Contact(email="marzya@mail.com"),
       license=openapi.License(name="MIT License"),
    ),
    public=True,
@@ -39,7 +39,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("accounts.urls")),
     path('blog/',include('blog.urls')),
     path('api-docs/',include_docs_urls(title='api sample')),
     path('swagger/output.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
