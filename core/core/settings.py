@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'accounts',
     'blog',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
+    
 ]
 
 MIDDLEWARE = [
@@ -153,6 +155,12 @@ AUTH_USER_MODEL = 'accounts.User'
 # Retrieved 11/5/2025, License - CC BY-SA 4.0
 
 REST_FRAMEWORK = { 
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-     }
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+####'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 
