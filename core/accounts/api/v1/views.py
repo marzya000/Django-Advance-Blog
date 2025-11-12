@@ -4,6 +4,9 @@ from rest_framework import status
 from .serializers import RegistrationSerializer,CustomAuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+
 
 
 class RegistrationApiView(generics.GenericAPIView):
@@ -36,3 +39,10 @@ class CustomObtainAuthToken(ObtainAuthToken):
             'email': user.email
         })
         
+
+class CustomDiscardAuthToken(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
