@@ -9,6 +9,10 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     # registration
     path('registration/', views.RegistrationApiView.as_view(),name='registration'),
+    # activation
+    
+    # resend activation
+    
    
     # change password
     path('change-password/',views.ChangePasswordApiView.as_view(),name='change-password'),
