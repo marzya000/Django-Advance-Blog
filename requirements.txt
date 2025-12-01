@@ -9,9 +9,11 @@ Pillow==10.4.0
 markdown==3.4.3
 django-filter==23.2
 drf-yasg[validation]
+djangorestframework_simplejwt==5.3.1
 
 # deployment modules
 
 
 # email third party modules
 django-mail-templated==2.6.5
+black==25.11.0

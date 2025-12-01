@@ -1,23 +1,23 @@
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly, IsAdminUser # type: ignore
-from rest_framework.response import Response # type: ignore
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser  # type: ignore
+from rest_framework.response import Response  # type: ignore
+from rest_framework.views import APIView  # type: ignore
+from rest_framework import viewsets  # type: ignore
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView  # type: ignore
+from rest_framework import mixins  # type: ignore
+from rest_framework.decorators import action  # type: ignore
+from rest_framework.filters import SearchFilter, OrderingFilter  # type: ignore
+from rest_framework.decorators import api_view, permission_classes  # type: ignore
+from rest_framework import status  # type: ignore
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend  # type: ignore
+from .paginations import DefaultPagination
+from .permissions import IsOwnerOrReadOnly
 from .serializers import PostSerializer, CategorySerializer
 from ...models import Post, Category
-from rest_framework.views import APIView # type: ignore
-from rest_framework import viewsets # type: ignore
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView # type: ignore
-from rest_framework import mixins # type: ignore
-from rest_framework.decorators import action # type: ignore
-from .permissions import IsOwnerOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend # type: ignore
-from rest_framework.filters import SearchFilter,OrderingFilter # type: ignore
-from .paginations import DefaultPagination
-# Example for function based view
-from rest_framework.decorators import api_view, permission_classes  # type: ignore
-from rest_framework import status # type: ignore
-from django.shortcuts import get_object_or_404
+
 
 # Example for function based view
-'''
+"""
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticated])
 def postList(request):
@@ -46,11 +46,10 @@ def postDetail(request,id):
         return Response(serializer.data)
     elif request.method == "DELETE":
         post.delete()
-        return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)'''
-   
+        return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)"""
 
 
-   #####
+#####
 
 # Example for APIView in Class Based View
 '''class PostList(APIView):
@@ -97,7 +96,7 @@ def postDetail(request,id):
         post.delete()
         return Response({'detail':'item removed successfully'},status=status.HTTP_204_NO_CONTENT)
 '''
-    
+
 '''
 #class PostList(ListCreateAPIView):
     #""" getting a list of posts and creating new post """
@@ -110,25 +109,27 @@ def postDetail(request,id):
     #permission_classes = [IsAuthenticatedOrReadOnly]
     #serializer_class = PostSerializer
     #queryset = Post.objects.filter(status=True)'''
-    
-    
+
+
 # Example for ViewSet in CBV
 
+
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    filterset_fields = {'category':['exact','in'],'author':['exact'],'status':['exact']}
-    search_fields = ['title','content']
-    ordering_fields = ['published_date']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = {
+        "category": ["exact", "in"],
+        "author": ["exact"],
+        "status": ["exact"],
+    }
+    search_fields = ["title", "content"]
+    ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
+
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-
-    
-
-
