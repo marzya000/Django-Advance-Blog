@@ -2,10 +2,11 @@ from rest_framework import generics # type: ignore
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (RegistrationSerializer,CustomAuthTokenSerializer,CustomTokenObtainPairSerializer,
-                          ChangePasswordSerializer,ProfileSerializer,ActivationResendSerializer)
+                          ChangePasswordSerializer,ProfileSerializer,ActivationResendSerializer,
+                          PasswordResetRequestSerializer,PasswordResetConfirmSerializer)
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
@@ -18,6 +19,8 @@ from rest_framework_simplejwt.exceptions import AuthenticationFailed
 import jwt
 from jwt.exceptions import ExpiredSignatureError,InvalidSignatureError
 from django.conf import settings
+from datetime import datetime, timedelta
+from django.core.mail import send_mail
 
 
 
@@ -168,6 +171,68 @@ class ActivationResendApiView(generics.GenericAPIView):
 
 
 
+  
+
+class PasswordResetRequestView(generics.GenericAPIView):
+    permission_classes = []
+    serializer_class = PasswordResetRequestSerializer
+
+    def post(self,request):
+        serializer = PasswordResetRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({'detail':'If this email exsits, a reset link has been sent.'})
         
+
+        payload = {
+            "sub": str(user.id),
+            "type": "password_reset",
+            "exp": datetime.utcnow() + timedelta(minutes=15)
+        }
+
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        
+        reset_link = f"https://127.0.0.1:8002/reset-password/{token}"
+
+
+        send_mail(
+            subject = "Password Reset Request",
+            message =f"Click the link to reset your password: {reset_link}",
+            from_email ="marzya@mail.com",
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        return Response({'detail':'If this email exsits, a reset link has been sent.'},status=status.HTTP_200_OK)
+        
+
+
+class PasswordResetConfirmView(generics.GenericAPIView):
+    serializer_class = PasswordResetConfirmSerializer
+
+    def post(self,request,token):
+        serializer = PasswordResetConfirmSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        new_password = serializer.validated_data['new_password']
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            return Response({'detail':'token has been expired'},status=status.HTTP_400_BAD_REQUEST)
+        except jwt.InvalidTokenError:
+            return Response({"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if payload.get('type') != "password_reset":
+            return Response({"error": "Invalid token type"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try: 
+            user=User.objects.get(id=payload["sub"])
+        except User.DoesNotExist:
+            return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        user.set_password(new_password)
+        user.save()
+        return Response({'detail':'Password has been reset successfully'},status=status.HTTP_200_OK)
 
 

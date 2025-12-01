@@ -20,6 +20,8 @@ urlpatterns = [
     path('change-password/',views.ChangePasswordApiView.as_view(),name='change-password'),
     
     # reset password
+    path('password-reset/request/',views.PasswordResetRequestView.as_view(), name='password-reset-request'),
+    path('password-reset/confirm/<str:token>/',views.PasswordResetConfirmView.as_view(),name='password-reset-confirm'),
 
     # login token
     path('token/login/',views.CustomObtainAuthToken.as_view(),name='token-login'),
