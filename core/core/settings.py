@@ -29,7 +29,9 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
+    "ALLOWED_HOSTS",
+    cast=lambda v: [s.strip() for s in v.split(",")],
+    default="*",
 )
 
 
@@ -164,7 +166,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-####'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+#### 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 
 # email configuration
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
