@@ -1,14 +1,16 @@
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser  # type: ignore
-from rest_framework.response import Response  # type: ignore
-from rest_framework.views import APIView  # type: ignore
+from rest_framework.permissions import IsAuthenticated  # type: ignore
+
+# from rest_framework.response import Response  # type: ignore
+# from rest_framework.views import APIView  # type: ignore
 from rest_framework import viewsets  # type: ignore
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView  # type: ignore
-from rest_framework import mixins  # type: ignore
-from rest_framework.decorators import action  # type: ignore
+
+# from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView  # type: ignore
+# from rest_framework import mixins  # type: ignore
+# from rest_framework.decorators import action  # type: ignore
 from rest_framework.filters import SearchFilter, OrderingFilter  # type: ignore
-from rest_framework.decorators import api_view, permission_classes  # type: ignore
-from rest_framework import status  # type: ignore
-from django.shortcuts import get_object_or_404
+
+# from rest_framework.decorators import api_view, permission_classes  # type: ignore
+# from rest_framework import status  # type: ignore
 from django_filters.rest_framework import DjangoFilterBackend  # type: ignore
 from .paginations import DefaultPagination
 from .permissions import IsOwnerOrReadOnly
@@ -36,7 +38,7 @@ def postList(request):
 @permission_classes([IsAuthenticatedOrReadOnly])
 def postDetail(request,id):
     post = get_object_or_404(Post,pk=id,status=True)
-    if request.method == "GET":        
+    if request.method == "GET":
         serializer=PostSerializer(post)
         return Response(serializer.data)
     elif request.method == "PUT":
@@ -56,13 +58,13 @@ def postDetail(request,id):
     """getting a list of posts and creating new post"""
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-    
+
     def get(self,request):
         # retrieving a list of posts
         posts = Post.objects.filter(status=True)
         serializer = PostSerializer(posts,many=True)
         return Response(serializer.data)
-    
+
     def post(self,request):
         """ creating a post with providing data """
         serializer = PostSerializer(data=request.data)
@@ -75,13 +77,13 @@ def postDetail(request,id):
     """ getting detail of the post and edit plus removing it """
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-    
+
     def get(self,request,id):
         """ retrieving the post data """
         post = get_object_or_404(Post,pk=id,status=True)
         serializer = self.serializer_class(post)
         return Response(serializer.data)
-    
+
     def put(self,request,id):
         """ editing the post data """
         post = get_object_or_404(Post,pk=id,status=True)

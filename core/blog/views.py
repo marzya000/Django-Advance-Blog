@@ -1,14 +1,11 @@
-from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import (
     ListView,
     DetailView,
-    FormView,
     CreateView,
     UpdateView,
     DeleteView,
 )
-from django.http import HttpResponse
 
 from .models import Post
 from django.shortcuts import get_object_or_404
@@ -90,9 +87,7 @@ class PostCreateView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
-    
-
-    """
+"""
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
