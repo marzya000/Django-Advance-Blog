@@ -8,8 +8,9 @@ Pillow==10.4.0
 # third party modules
 markdown==3.4.3
 django-filter==23.2
-drf-yasg[validation]
+drf-yasg[validation]==1.21.11
 djangorestframework_simplejwt==5.3.1
+djoser==2.2.1
 
 # deployment modules
 
