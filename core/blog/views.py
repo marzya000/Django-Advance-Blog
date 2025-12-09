@@ -73,7 +73,7 @@ class PostListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     # def get_queryset(self):
     # posts = Post.objects.filter(status=True)
     # return posts
-
+    
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post

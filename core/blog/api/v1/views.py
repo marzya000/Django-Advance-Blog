@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated  # type: ignore
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly # type: ignore
 
 # from rest_framework.response import Response  # type: ignore
 # from rest_framework.views import APIView  # type: ignore
@@ -117,7 +117,7 @@ def postDetail(request,id):
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]  #
+    permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
