@@ -8,14 +8,14 @@ app_name = "blog"
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     # path('go-to-maktabkhooneh/<int:pk>/', views.RedirectToMaktab.as_view(),name='redirect-to-maktabkhooneh'),
-    path("post/", views.PostListView.as_view(), name="post-list"),
-    path("post/<int:pk>/", views.PostDetailView.as_view(), name="post-detail"),
-    path("post/create/", views.PostCreateView.as_view(), name="post-create"),
-    path("post/<int:pk>/edit/", views.PostEditView.as_view(), name="post-edit"),
+    path("post/", views.PostListView.as_view(), name="post_list"),
+    path("post/<int:pk>/", views.PostDetailView.as_view(), name="post_detail"),
+    path("post/create/", views.PostCreateView.as_view(), name="post_create"),
+    path("post/<int:pk>/edit/", views.PostEditView.as_view(), name="post_edit"),
     path(
         "post/<int:pk>/delete/",
         views.PostDeleteView.as_view(),
-        name="post-delete",
+        name="post_delete",
     ),
     path("api/v1/", include(("blog.api.v1.urls", "api-v1"), namespace="api-v1")),
 ]
