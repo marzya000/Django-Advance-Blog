@@ -1,5 +1,12 @@
 
 services:
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - '6379:6379'
+    command: redis-server --save 60 1 --loglevel warning
+
   backend:
     build: .
     container_name: backend
@@ -37,6 +44,23 @@ services:
 
       #Specifies the server hostname. Used in auto-generated TLS certificate if enabled.
       - ServerOptions__HostName=smtp4dev
+
+  master:
+    image: locustio/locust
+    profiles: ["load-test"]
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://backend:8000
+  
+  worker:
+    image: locustio/locust
+    profiles: ["load-test"]
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
+
 
 volumes:
   smtp4dev-data:
