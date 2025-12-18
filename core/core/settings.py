@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "mail_templated",
     "djoser",
     "corsheaders",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -191,3 +192,4 @@ CORS_ALLOWED_ORIGINS = [
 # celery configs 
 
 CELERY_BROKER_URL = 'redis://redis:6379/1'
+
