@@ -16,7 +16,7 @@ djoser==2.2.1
 django-cors-headers==4.9.0
 
 # deployment modules
-
+gunicorn==21.2.0
 
 # email third party modules
 django-mail-templated==2.6.5
@@ -33,4 +33,5 @@ Faker==35.2.2
 
 celery==5.6.0
 redis==7.1.0
+django-celery-beat==2.8.1
 django-redis==6.0.0
