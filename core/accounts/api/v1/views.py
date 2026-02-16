@@ -13,7 +13,7 @@ from .serializers import (
 )
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
@@ -26,7 +26,7 @@ from rest_framework_simplejwt.exceptions import AuthenticationFailed
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from django.conf import settings
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from django.core.mail import send_mail
 
 
@@ -146,6 +146,7 @@ class TestEmailSend(generics.GenericAPIView):
 
 
 class ActivationApiView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request, token, *args, **kwargs):
         try:
             token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
@@ -208,13 +209,14 @@ class PasswordResetRequestView(generics.GenericAPIView):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             return Response(
-                {"detail": "If this email exsits, a reset link has been sent."}
+                {"detail": "If this email exists, a reset link has been sent."}
             )
 
         payload = {
             "sub": str(user.id),
             "type": "password_reset",
-            "exp": datetime.utcnow() + timedelta(minutes=15),
+            "iat": datetime.now(timezone.utc),
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=15)
         }
 
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")

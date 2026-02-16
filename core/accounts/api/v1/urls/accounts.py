@@ -22,7 +22,7 @@ urlpatterns = [
     ),
     # resend activation
     path(
-        "activation/resend",
+        "activation/resend/",
         views.ActivationResendApiView.as_view(),
         name="activation-resend",
     ),

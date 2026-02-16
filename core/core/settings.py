@@ -184,6 +184,17 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 
+
+# JWT authentication settings
+# Leeway is added to handle possible clock skew between different systems
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "LEEWAY": 30,
+}
+
     
 # corsheaders setting
 CORS_ALLOWED_ORIGINS = [
